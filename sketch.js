@@ -1,10 +1,9 @@
-let globe, Globerotation = 1, tg1, globeTexture, analyzer, bg;
+let globe, Globerotation = 1, tg1, globeTexture, analyzer, bg, replays = 0;
 
 function preload(){
   	globe = loadImage("assets/Img/globetexture.jpg");
 	tg1 = loadModel("assets/Obj/logo.obj");
 	sigla = loadSound('assets//Audio/TG1_new.mp3');
-	trumpet = loadImage("assets/Img/Trumpet.png");
 	bg = loadImage("assets/Img/Background.jpg");
 }
 
@@ -17,8 +16,20 @@ function setup() {
 }
 
 function draw() {
+	//Call the Function to create the Background
 	background(0);
 	backgroundImage(bg);
+	
+	//Stylize Cursors
+	if(!sigla.isPlaying()){
+		if(replays === 0 || sigla.isPaused()){
+			cursor('assets/Img/play.png');
+		} else{
+			cursor('assets/Img/replay.png');
+		}
+  	} else{
+    	cursor('assets/Img/pause.png');
+  	}
 	
 	//Analyze Audio
 	analyzer.analyze();
@@ -51,6 +62,7 @@ function draw() {
 	pop();
 }
 
+//Create the Background
 function backgroundImage(img) {
  	push();
   	imageMode(CENTER);
@@ -68,10 +80,13 @@ function backgroundImage(img) {
 //Pause and Play on click
 function mousePressed() {
   if(!sigla.isPlaying()){
-    sigla.play();
-  } else{
-    sigla.pause();
-  }
+    	sigla.play();
+	  if(replays === 0){
+		  replays++;
+	  }
+  	} else{
+    	sigla.pause();
+  	}
 }
 
 //Responsive Window
